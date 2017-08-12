@@ -1,0 +1,8 @@
+vendor/
+phpunit.xml
+config/local.php
+cache/
+tests/
+.git/
+.idea/
+*.md
