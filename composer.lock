@@ -165,26 +165,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ngyuki/php-ritz.git",
-                "reference": "49569f4bc9cefca229b63a6bb54703c5ee592106"
+                "reference": "457a8d014c400f815633a33a924d45b512d4fa4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ngyuki/php-ritz/zipball/49569f4bc9cefca229b63a6bb54703c5ee592106",
-                "reference": "49569f4bc9cefca229b63a6bb54703c5ee592106",
+                "url": "https://api.github.com/repos/ngyuki/php-ritz/zipball/457a8d014c400f815633a33a924d45b512d4fa4e",
+                "reference": "457a8d014c400f815633a33a924d45b512d4fa4e",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.6",
                 "nikic/fast-route": "^1.2",
+                "php": "^7.0.10",
                 "php-di/php-di": "^5.4",
                 "zendframework/zend-diactoros": "^1.4",
                 "zendframework/zend-stratigility": "^2.0"
-            },
-            "require-dev": {
-                "filp/whoops": "^2.1",
-                "franzl/whoops-middleware": "^0.5.0",
-                "zendframework/-zenddom": "^2.6",
-                "zendframework/zend-session": "^2.7"
             },
             "type": "library",
             "autoload": {
@@ -196,7 +191,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2017-08-09T04:49:51+00:00"
+            "time": "2017-08-12T11:59:01+00:00"
         },
         {
             "name": "nikic/fast-route",
