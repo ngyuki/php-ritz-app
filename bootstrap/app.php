@@ -2,9 +2,12 @@
 namespace Ritz\App;
 
 use function DI\env;
+use function DI\get;
 
 return [
     'debug' => env('APP_DEBUG', true),
+
+    'whoops' => get('debug'),
 
     // キャッシュディレクトリ
     'app.cache_dir' => getenv('APP_CACHE_DIR') ?: __DIR__ . '/../cache/',
