@@ -27,8 +27,8 @@ return [
                 ]);
         }]);
 
-        $r->get('/login',    [LoginController::class, 'indexAction']);
-        $r->post('/login',   [LoginController::class, 'loginAction']);
+        $r->get('/login',    [LoginController::class, 'indexAction', 'noLogin' => true]);
+        $r->post('/login',   [LoginController::class, 'loginAction', 'noLogin' => true]);
         $r->get('/logout',   [LoginController::class, 'logoutAction']);
 
         $r->addGroup('/user', function (RouteCollector $r) {

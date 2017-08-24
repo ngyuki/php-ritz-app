@@ -24,15 +24,9 @@ class LoginMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
-        $result = RouteResult::from($request);
+        $noLogin = $request->getAttribute('noLogin');
 
-        if ($result === null) {
-            return $delegate->process($request);
-        }
-
-        $instance = $result->getInstance();
-
-        if ($instance instanceof LoginController) {
+        if ($noLogin) {
             return $delegate->process($request);
         }
 
