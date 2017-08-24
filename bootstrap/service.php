@@ -15,7 +15,9 @@ return [
     Router::class => function (ContainerInterface $container) {
         return new Router(
             $container->get('app.routes'),
-            $container->get('app.use_cache') ? $container->get('app.cache_dir') : null
+            $container->get('app.use_cache')
+                ? $container->get('app.cache_dir') . DIRECTORY_SEPARATOR . 'routes.php'
+                : null
         );
     },
 
