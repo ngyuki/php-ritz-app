@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  php:
+    image: ngyuki/php-dev
+    ports:
+      - 9876:9876
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - $PWD:$PWD:rw
+      - $HOME:$HOME:ro
+    working_dir: $PWD
+    command: >
+      php -S 0.0.0.0:9876 -t ./public
+        -d error_reporting=-1
+        -d display_errors=on
+        -d display_startup_errors=on
+        -d log_errors=on
+        -d error_log=
+        -d zend.assertions=1
+        -d assert.exception=1
+        -d xdebug.cli_color=1
+        -d xdebug.remote_enable=1
+        -d xdebug.remote_connect_back=1
+        -d date.timezone=Asia/Tokyo
