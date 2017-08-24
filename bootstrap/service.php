@@ -13,7 +13,10 @@ use Ritz\App\Component\IdentityInterface;
 
 return [
     Router::class => function (ContainerInterface $container) {
-        return new Router($container->get('app.routes'), $container->get('app.cache_dir'));
+        return new Router(
+            $container->get('app.routes'),
+            $container->get('app.use_cache') ? $container->get('app.cache_dir') : null
+        );
     },
 
     RendererInterface::class => function (ContainerInterface $container) {

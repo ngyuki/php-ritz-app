@@ -1,12 +1,16 @@
 <?php
 namespace Ritz\App;
 
+use function DI\env;
+
 return [
-    'debug' => true,
+    'debug' => env('APP_DEBUG', true),
 
     // キャッシュディレクトリ
-    // null ならキャッシュは使用されない
-    'app.cache_dir' => null,
+    'app.cache_dir' => getenv('APP_CACHE_DIR') ?: __DIR__ . '/../cache/',
+
+    // キャッシュの有効無効
+    'app.use_cache' => getenv('APP_USE_CACHE'),
 
     // テンプレートファイルを格納するディレクトリ
     'app.view.directory' => dirname(__DIR__) . '/resource/view/',

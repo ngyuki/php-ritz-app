@@ -33,7 +33,7 @@ class ContainerFactory
         $builder = new ContainerBuilder();
 
         // キャッシュが有効なら PHP-DI にキャッシュを指定する
-        if (isset($definitions['app.cache_dir']) && $definitions['app.cache_dir'] !== null) {
+        if ($definitions['app.use_cache']) {
             $cache = new FilesystemCache($definitions['app.cache_dir']);
             $builder->setDefinitionCache($cache);
         }
