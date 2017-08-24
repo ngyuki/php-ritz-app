@@ -128,4 +128,30 @@ class ApplicationTest extends TestCase
 
         self::assertEquals(500, $response->getStatusCode());
     }
+
+    /**
+     * @test
+     */
+    function callable_()
+    {
+        $container = $this->initWithIdentity();
+
+        $request = $this->createRequest('http://localhost/callable');
+        $response = $this->handle($request, $container);
+
+        self::assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    function callback_()
+    {
+        $container = $this->initWithIdentity();
+
+        $request = $this->createRequest('http://localhost/callback');
+        $response = $this->handle($request, $container);
+
+        self::assertEquals(200, $response->getStatusCode());
+    }
 }

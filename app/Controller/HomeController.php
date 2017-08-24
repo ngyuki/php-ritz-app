@@ -42,4 +42,11 @@ class HomeController
     {
         throw new \RuntimeException("アクションで例外");
     }
+
+    public function __invoke()
+    {
+        return (new ViewModel())->withTemplate('App/Home/show')->withVariables([
+            'msg' => "アクションを指定せずに callable なクラスを指定",
+        ]);
+    }
 }

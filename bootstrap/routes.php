@@ -5,6 +5,7 @@ use function DI\value;
 use FastRoute\RouteCollector;
 use Ritz\App\Controller\HomeController;
 use Ritz\App\Controller\LoginController;
+use Ritz\View\ViewModel;
 
 return [
     // ルートの定義
@@ -16,6 +17,15 @@ return [
         $r->get('/error',     [HomeController::class, 'errorAction']);
         $r->get('/relative',  [HomeController::class, 'relativeAction']);
         $r->get('/attr',      [HomeController::class, 'attrAction', 'attr' => 'val']);
+        $r->get('/callable',  [HomeController::class]);
+
+        $r->get('/callback', [function () {
+            return (new ViewModel())
+                ->withTemplate('App/Home/show')
+                ->withVariables([
+                    'msg' => 'ハンドラにクロージャーを指定'
+                ]);
+        }]);
 
         $r->get('/login',    [LoginController::class, 'indexAction']);
         $r->post('/login',   [LoginController::class, 'loginAction']);
