@@ -2,9 +2,9 @@
 namespace Ritz\App;
 
 use function DI\get;
-
 use Psr\Container\ContainerInterface;
-use Ritz\Router\Router;
+use Ritz\Router\FastRouter;
+use Ritz\Router\RouterInterface;
 use Ritz\View\PhpRenderer;
 use Ritz\View\RendererInterface;
 use Ritz\View\TemplateResolver;
@@ -12,8 +12,8 @@ use Ritz\App\Component\Identity;
 use Ritz\App\Component\IdentityInterface;
 
 return [
-    Router::class => function (ContainerInterface $container) {
-        return new Router(
+    RouterInterface::class => function (ContainerInterface $container) {
+        return new FastRouter(
             $container->get('app.routes'),
             $container->get('app.use_cache')
                 ? $container->get('app.cache_dir') . DIRECTORY_SEPARATOR . 'routes.php'
