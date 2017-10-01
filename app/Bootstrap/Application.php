@@ -5,6 +5,7 @@ use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Ritz\App\Middleware\RoutingMissMiddleware;
 use Zend\Stratigility\MiddlewarePipe;
 use Ritz\Middleware\DispatchMiddleware;
 use Ritz\Middleware\RenderMiddleware;
@@ -53,6 +54,9 @@ class Application implements MiddlewareInterface
         $pipeline->pipe($this->container->get(RenderMiddleware::class));
 
         if (!$this->container->get('debug')) {
+            // ルーティング失敗にテンプレートを割り当てる
+            $pipeline->pipe($this->container->get(RoutingMissMiddleware::class));
+
             // 例外発生時にエラーページのテンプレートを選択するミドルウェア
             // すべての例外をキャッチしてエラーページのための ViewModel を返す
             $pipeline->pipe($this->container->get(ErrorMiddleware::class));

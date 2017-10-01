@@ -18,6 +18,7 @@ return [
         $r->get('/relative',  [HomeController::class, 'relativeAction']);
         $r->get('/attr',      [HomeController::class, 'attrAction', 'attr' => 'val']);
         $r->get('/callable',  [HomeController::class]);
+        $r->post('/post',     [HomeController::class, 'indexAction']);
 
         $r->get('/callback', [function () {
             return (new ViewModel())

@@ -33,6 +33,7 @@ class ApplicationTest extends TestCase
 
         $this->container = (new ContainerFactory)->create();
         $this->container->set(IdentityInterface::class, $this->identity);
+        $this->container->set('debug', true);
     }
 
     function createRequest($uri)
@@ -108,19 +109,76 @@ class ApplicationTest extends TestCase
     /**
      * @test
      */
-    function notfound_()
+    function notfound_debug()
     {
+        $this->container->set('debug', true);
         $request = $this->createRequest('http://localhost/notfound');
         $response = $this->handle($request);
+        $response->getBody()->rewind();
 
         self::assertEquals(404, $response->getStatusCode());
+        self::assertNotContains('resource/view/Error/404.phtml', $response->getBody()->getContents());
     }
 
     /**
      * @test
      */
-    function error_()
+    function notfound_no_debug()
     {
+        $this->container->set('debug', false);
+        $request = $this->createRequest('http://localhost/notfound');
+        $response = $this->handle($request);
+        $response->getBody()->rewind();
+
+        self::assertEquals(404, $response->getStatusCode());
+        self::assertContains('resource/view/Error/404.phtml', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    function method_not_allowed_debug()
+    {
+        $this->container->set('debug', true);
+        $request = $this->createRequest('http://localhost/post');
+        $response = $this->handle($request);
+        $response->getBody()->rewind();
+
+        self::assertEquals(405, $response->getStatusCode());
+        self::assertNotContains('resource/view/Error/405.phtml', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    function method_not_allowed_no_debug()
+    {
+        $this->container->set('debug', false);
+        $request = $this->createRequest('http://localhost/post');
+        $response = $this->handle($request);
+        $response->getBody()->rewind();
+
+        self::assertEquals(405, $response->getStatusCode());
+        self::assertContains('resource/view/Error/405.phtml', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    function error_debug()
+    {
+        $this->container->set('debug', true);
+        $request = $this->createRequest('http://localhost/error');
+        $this->handle($request);
+    }
+
+    /**
+     * @test
+     */
+    function error_no_debug()
+    {
+        $this->container->set('debug', false);
         $request = $this->createRequest('http://localhost/error');
         $response = $this->handle($request);
 
