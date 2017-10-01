@@ -56,8 +56,7 @@ class Application implements MiddlewareInterface
         // すべての例外をキャッチしてエラーページのための ViewModel を返す
         $pipeline->pipe($this->container->get(ErrorMiddleware::class));
 
-        if ($this->container->get('debug')) {
-
+        if ($this->container->get('debug') && $this->container->get('whoops')) {
             // デバッグ時は Whoops を有効にする
             // このミドルウェアはすべての例外をキャッチしてデバッグ用ページをレスポンスに書き込む
             $pipeline->pipe(new WhoopsMiddleware());
