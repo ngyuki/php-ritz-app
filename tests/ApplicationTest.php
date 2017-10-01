@@ -1,11 +1,11 @@
 <?php
 namespace Ritz\Test\App;
 
+use DI\Container;
 use Ritz\App\Bootstrap\Application;
 use Ritz\App\Bootstrap\ContainerFactory;
 use Ritz\App\Component\IdentityInterface;
 use Ritz\App\Component\IdentityStab;
-use Interop\Container\ContainerInterface;
 use Ritz\Bootstrap\Server;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,15 +16,23 @@ use Zend\Dom\Document\Query;
 
 class ApplicationTest extends TestCase
 {
-    function initWithIdentity()
+    /**
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * @var IdentityStab
+     */
+    private $identity;
+
+    protected function setUp()
     {
-        $identity = new IdentityStab();
-        $identity->set(['username' => 'oreore']);
+        $this->identity = new IdentityStab();
+        $this->identity->set(['username' => 'oreore']);
 
-        $container = (new ContainerFactory)->create();
-        $container->set(IdentityInterface::class, $identity);
-
-        return $container;
+        $this->container = (new ContainerFactory)->create();
+        $this->container->set(IdentityInterface::class, $this->identity);
     }
 
     function createRequest($uri)
@@ -44,10 +52,9 @@ class ApplicationTest extends TestCase
         return Query::execute($expr, $document, Query::TYPE_CSS);
     }
 
-    function handle(ServerRequestInterface $request, ContainerInterface $container = null)
+    function handle(ServerRequestInterface $request)
     {
-        $container = $container ?: (new ContainerFactory)->create();
-        $response = (new Server())->handle($container->get(Application::class), $request);
+        $response = (new Server())->handle($this->container->get(Application::class), $request);
         return $response;
     }
 
@@ -56,6 +63,8 @@ class ApplicationTest extends TestCase
      */
     function redirect_login()
     {
+        $this->identity->clear();
+
         $request = $this->createRequest('http://localhost/');
         $response = $this->handle($request);
 
@@ -68,13 +77,10 @@ class ApplicationTest extends TestCase
      */
     function top_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(200, $response->getStatusCode());
-
     }
 
     /**
@@ -82,10 +88,8 @@ class ApplicationTest extends TestCase
      */
     function attr_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/attr');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(200, $response->getStatusCode());
     }
@@ -95,10 +99,8 @@ class ApplicationTest extends TestCase
      */
     function relative_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/relative');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(200, $response->getStatusCode());
     }
@@ -108,10 +110,8 @@ class ApplicationTest extends TestCase
      */
     function notfound_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/notfound');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(404, $response->getStatusCode());
     }
@@ -121,10 +121,8 @@ class ApplicationTest extends TestCase
      */
     function error_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/error');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(500, $response->getStatusCode());
     }
@@ -134,10 +132,8 @@ class ApplicationTest extends TestCase
      */
     function callable_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/callable');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(200, $response->getStatusCode());
     }
@@ -147,10 +143,8 @@ class ApplicationTest extends TestCase
      */
     function callback_()
     {
-        $container = $this->initWithIdentity();
-
         $request = $this->createRequest('http://localhost/callback');
-        $response = $this->handle($request, $container);
+        $response = $this->handle($request);
 
         self::assertEquals(200, $response->getStatusCode());
     }
