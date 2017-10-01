@@ -52,14 +52,10 @@ class Application implements MiddlewareInterface
         // コントローラーやミドルウェアが返した ViewModel を元にテンプレートをレンダリングする
         $pipeline->pipe($this->container->get(RenderMiddleware::class));
 
-        // 例外発生時にエラーページのテンプレートを選択するミドルウェア
-        // すべての例外をキャッチしてエラーページのための ViewModel を返す
-        $pipeline->pipe($this->container->get(ErrorMiddleware::class));
-
-        if ($this->container->get('debug') && $this->container->get('whoops')) {
-            // デバッグ時は Whoops を有効にする
-            // このミドルウェアはすべての例外をキャッチしてデバッグ用ページをレスポンスに書き込む
-            $pipeline->pipe(new WhoopsMiddleware());
+        if (!$this->container->get('debug')) {
+            // 例外発生時にエラーページのテンプレートを選択するミドルウェア
+            // すべての例外をキャッチしてエラーページのための ViewModel を返す
+            $pipeline->pipe($this->container->get(ErrorMiddleware::class));
         }
 
         // ログインをチェックしてログイン画面へのリダイレクトを行うミドルウェア
