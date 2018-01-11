@@ -2,6 +2,6 @@
 
 <h3>Error</h3>
 
-<p><?= $this->h($message) ?></p>
 
-<pre><?= $this->h(__FILE__) ?></pre>
+<p><?= $this->h($message) ?></p>
+<pre><?= $this->h(strtr(__FILE__, DIRECTORY_SEPARATOR, '/')) ?></pre>
