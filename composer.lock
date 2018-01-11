@@ -157,6 +157,7 @@
                 "request",
                 "response"
             ],
+            "abandoned": "http-interop/http-server-middleware",
             "time": "2017-01-14T15:23:42+00:00"
         },
         {
@@ -165,12 +166,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ngyuki/php-ritz.git",
-                "reference": "b0a76f97d53e4c1a8eb43f4d1f1a89d2d523dd70"
+                "reference": "4114615c9dc59c3a8dbb2cd4859413d17a1213e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ngyuki/php-ritz/zipball/b0a76f97d53e4c1a8eb43f4d1f1a89d2d523dd70",
-                "reference": "b0a76f97d53e4c1a8eb43f4d1f1a89d2d523dd70",
+                "url": "https://api.github.com/repos/ngyuki/php-ritz/zipball/4114615c9dc59c3a8dbb2cd4859413d17a1213e2",
+                "reference": "4114615c9dc59c3a8dbb2cd4859413d17a1213e2",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +195,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2017-09-17T02:17:12+00:00"
+            "time": "2017-10-01T09:12:41+00:00"
         },
         {
             "name": "nikic/fast-route",
