@@ -2,6 +2,10 @@
 namespace Ritz\Test\App;
 
 use DI\Container;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\Uri;
+use Laminas\Dom\Document;
+use Laminas\Dom\Document\Query;
 use Ritz\App\Bootstrap\Application;
 use Ritz\App\Bootstrap\ContainerFactory;
 use Ritz\App\Component\IdentityInterface;
@@ -9,10 +13,8 @@ use Ritz\App\Component\IdentityStab;
 use Ritz\Bootstrap\Server;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\Diactoros\Uri;
-use Zend\Dom\Document;
-use Zend\Dom\Document\Query;
+use RuntimeException;
+use function PHPUnit\Framework\assertEquals;
 
 class ApplicationTest extends TestCase
 {
@@ -26,7 +28,7 @@ class ApplicationTest extends TestCase
      */
     private $identity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->identity = new IdentityStab();
         $this->identity->set(['username' => 'oreore']);
@@ -40,6 +42,7 @@ class ApplicationTest extends TestCase
     {
         $request = ServerRequestFactory::fromGlobals();
         $request = $request->withUri(new Uri($uri));
+        assert($request instanceof ServerRequestInterface);
         return $request;
     }
 
@@ -69,8 +72,8 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/');
         $response = $this->handle($request);
 
-        self::assertEquals(302, $response->getStatusCode());
-        self::assertEquals('/login', $response->getHeaderLine('Location'));
+        assertEquals(302, $response->getStatusCode());
+        assertEquals('/login', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -81,7 +84,7 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/');
         $response = $this->handle($request);
 
-        self::assertEquals(200, $response->getStatusCode());
+        assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -92,7 +95,7 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/attr');
         $response = $this->handle($request);
 
-        self::assertEquals(200, $response->getStatusCode());
+        assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -103,7 +106,7 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/relative');
         $response = $this->handle($request);
 
-        self::assertEquals(200, $response->getStatusCode());
+        assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -116,8 +119,8 @@ class ApplicationTest extends TestCase
         $response = $this->handle($request);
         $response->getBody()->rewind();
 
-        self::assertEquals(404, $response->getStatusCode());
-        self::assertNotContains('resource/view/Error/404.phtml', $response->getBody()->getContents());
+        assertEquals(404, $response->getStatusCode());
+        self::assertStringNotContainsString('resource/view/Error/404.phtml', $response->getBody()->getContents());
     }
 
     /**
@@ -130,8 +133,8 @@ class ApplicationTest extends TestCase
         $response = $this->handle($request);
         $response->getBody()->rewind();
 
-        self::assertEquals(404, $response->getStatusCode());
-        self::assertContains('resource/view/Error/404.phtml', $response->getBody()->getContents());
+        assertEquals(404, $response->getStatusCode());
+        self::assertStringContainsString('resource/view/Error/404.phtml', $response->getBody()->getContents());
     }
 
     /**
@@ -144,8 +147,8 @@ class ApplicationTest extends TestCase
         $response = $this->handle($request);
         $response->getBody()->rewind();
 
-        self::assertEquals(405, $response->getStatusCode());
-        self::assertNotContains('resource/view/Error/405.phtml', $response->getBody()->getContents());
+        assertEquals(405, $response->getStatusCode());
+        self::assertStringNotContainsString('resource/view/Error/405.phtml', $response->getBody()->getContents());
     }
 
     /**
@@ -158,18 +161,19 @@ class ApplicationTest extends TestCase
         $response = $this->handle($request);
         $response->getBody()->rewind();
 
-        self::assertEquals(405, $response->getStatusCode());
-        self::assertContains('resource/view/Error/405.phtml', $response->getBody()->getContents());
+        assertEquals(405, $response->getStatusCode());
+        self::assertStringContainsString('resource/view/Error/405.phtml', $response->getBody()->getContents());
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     function error_debug()
     {
         $this->container->set('debug', true);
         $request = $this->createRequest('http://localhost/error');
+
+        $this->expectException(RuntimeException::class);
         $this->handle($request);
     }
 
@@ -182,7 +186,7 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/error');
         $response = $this->handle($request);
 
-        self::assertEquals(500, $response->getStatusCode());
+        assertEquals(500, $response->getStatusCode());
     }
 
     /**
@@ -193,7 +197,7 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/callable');
         $response = $this->handle($request);
 
-        self::assertEquals(200, $response->getStatusCode());
+        assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -204,6 +208,6 @@ class ApplicationTest extends TestCase
         $request = $this->createRequest('http://localhost/callback');
         $response = $this->handle($request);
 
-        self::assertEquals(200, $response->getStatusCode());
+        assertEquals(200, $response->getStatusCode());
     }
 }

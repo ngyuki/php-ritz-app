@@ -16,11 +16,18 @@
     },
     "require-dev": {
         "franzl/whoops-middleware": "^2.0",
-        "laminas/laminas-dom": "^2.8"
+        "laminas/laminas-dom": "^2.8",
+        "ngyuki/phpunit-functions": "^1.0",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4" : {
             "Ritz\\App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ritz\\Test\\App\\": "tests/"
         }
     }
 }
