@@ -1,15 +1,14 @@
-version: '2'
+version: '3.8'
 
 services:
-  php:
-    image: ngyuki/php-dev
+  app:
+    image: ngyuki/php-dev:7.3
+    init: true
     ports:
       - 9876:9876
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - $PWD:$PWD:rw
-      - $HOME:$HOME:ro
-    working_dir: $PWD
+      - .:/code
+    working_dir: /code
     command: >
       php -S 0.0.0.0:9876 -t ./public
         -d error_reporting=-1
@@ -19,7 +18,8 @@ services:
         -d error_log=
         -d zend.assertions=1
         -d assert.exception=1
+        -d zend_extension=xdebug.so
         -d xdebug.cli_color=1
-        -d xdebug.remote_enable=1
-        -d xdebug.remote_connect_back=1
+        -d xdebug.mode=develop,debug
+        -d xdebug.client_host=host.docker.internal
         -d date.timezone=Asia/Tokyo
