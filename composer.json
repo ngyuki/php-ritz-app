@@ -3,21 +3,20 @@
     "type": "library",
     "license": "MIT",
     "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
         "platform": {
-            "php": "7.0.10"
+            "php": "7.3.27"
         }
     },
     "require": {
-        "php": "~7.0.10",
-        "ngyuki/ritz": "dev-master",
-        "doctrine/cache": "^1.6",
-        "nikic/fast-route": "^1.2",
-        "zendframework/zend-session": "^2.7",
-        "php-di/php-di": "^5.4"
+        "php": "^7.3|^7.4|^8.0",
+        "laminas/laminas-session": "^2.10",
+        "ngyuki/ritz": "dev-master"
     },
     "require-dev": {
-        "franzl/whoops-middleware": "^0.5.0",
-        "zendframework/zend-dom": "^2.6"
+        "franzl/whoops-middleware": "^2.0",
+        "laminas/laminas-dom": "^2.8"
     },
     "autoload": {
         "psr-4" : {
