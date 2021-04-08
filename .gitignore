@@ -1,4 +1,5 @@
 /vendor/
 /phpunit.xml
 /.phpunit.result.cache
+/.psalm/
 /config/local.php

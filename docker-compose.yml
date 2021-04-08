@@ -9,6 +9,8 @@ services:
     volumes:
       - .:/code
     working_dir: /code
+    environment:
+      HOME: /tmp/code
     command: >
       php -S 0.0.0.0:9876 -t ./public
         -d error_reporting=-1

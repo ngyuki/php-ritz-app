@@ -18,7 +18,8 @@
         "franzl/whoops-middleware": "^2.0",
         "laminas/laminas-dom": "^2.8",
         "ngyuki/phpunit-functions": "^1.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "psalm/phar": "^4.7"
     },
     "autoload": {
         "psr-4" : {
@@ -29,5 +30,17 @@
         "psr-4": {
             "Ritz\\Test\\App\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": [
+            "phpunit"
+        ],
+        "psalm": [
+            "psalm.phar"
+        ],
+        "qa": [
+            "@composer test",
+            "@composer psalm"
+        ]
     }
 }
