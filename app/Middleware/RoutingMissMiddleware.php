@@ -1,22 +1,23 @@
 <?php
 namespace Ritz\App\Middleware;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Laminas\Diactoros\Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Ritz\Router\RouteResult;
 use Ritz\View\ViewModel;
-use Zend\Diactoros\Response;
 
 class RoutingMissMiddleware implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $route = $request->getAttribute(RouteResult::class);
 
         if ($route  instanceof RouteResult) {
             if ($route->getInstance()) {
-                return $delegate->process($request);
+                return $handler->handle($request);
             }
             $status = $route->getStatus();
         } else {

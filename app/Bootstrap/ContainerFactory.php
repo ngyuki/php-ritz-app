@@ -2,7 +2,6 @@
 namespace Ritz\App\Bootstrap;
 
 use DI\ContainerBuilder;
-use Doctrine\Common\Cache\FilesystemCache;
 use Ritz\Bootstrap\Configure;
 
 class ContainerFactory
@@ -34,8 +33,8 @@ class ContainerFactory
 
         // キャッシュが有効なら PHP-DI にキャッシュを指定する
         if ($definitions['app.use_cache']) {
-            $cache = new FilesystemCache($definitions['app.cache_dir']);
-            $builder->setDefinitionCache($cache);
+            $dir = $definitions['app.cache_dir'];
+            $builder->enableCompilation($dir);
         }
 
         // コンテナを作成する

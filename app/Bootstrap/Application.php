@@ -1,18 +1,19 @@
 <?php
 namespace Ritz\App\Bootstrap;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Franzl\Middleware\Whoops\WhoopsMiddleware;
+use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Ritz\App\Middleware\RoutingMissMiddleware;
-use Zend\Stratigility\MiddlewarePipe;
 use Ritz\Middleware\DispatchMiddleware;
 use Ritz\Middleware\RenderMiddleware;
 use Ritz\Middleware\RouteMiddleware;
 use Ritz\App\Middleware\ErrorMiddleware;
 use Ritz\App\Middleware\LoginMiddleware;
-use Franzl\Middleware\Whoops\PSR15Middleware as WhoopsMiddleware;
 
 /**
  * アプリケーションクラス
@@ -34,10 +35,10 @@ class Application implements MiddlewareInterface
 
     /**
      * @param ServerRequestInterface $request
-     * @param DelegateInterface $delegate
-     * @return \Psr\Http\Message\ResponseInterface
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $pipeline = new MiddlewarePipe();
 
@@ -68,6 +69,6 @@ class Application implements MiddlewareInterface
         // ルーティング結果を元にコントローラーのアクションメソッドをディスパッチする
         $pipeline->pipe($this->container->get(DispatchMiddleware::class));
 
-        return $pipeline->process($request, $delegate);
+        return $pipeline->process($request, $handler);
     }
 }

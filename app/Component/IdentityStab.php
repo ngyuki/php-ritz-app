@@ -15,16 +15,12 @@ class IdentityStab implements IdentityInterface
         return $this->session->offsetExists(static::class);
     }
 
-    /**
-     * @param string|null $name
-     * @return array
-     */
     public function get($name = null)
     {
         if ($name === null) {
             return $this->session->offsetGet(static::class);
         } else {
-            return $this->session->offsetGet(static::class)[$name];
+            return $this->session->offsetGet(static::class)[$name] ?? null;
         }
     }
 

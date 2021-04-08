@@ -1,8 +1,8 @@
 <?php
 namespace Ritz\App\Component;
 
-use Zend\Session\Container as SessionContainer;
+use Laminas\Session\Container;
 
-class Session extends SessionContainer
+class Session extends Container
 {
 }

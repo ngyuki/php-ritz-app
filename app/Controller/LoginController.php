@@ -1,8 +1,8 @@
 <?php
 namespace Ritz\App\Controller;
 
+use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\RedirectResponse;
 use Ritz\View\ViewModel;
 use Ritz\App\Component\IdentityInterface;
 use Ritz\App\Service\LoginService;
@@ -17,8 +17,8 @@ class LoginController
     public function loginAction(ServerRequestInterface $request, LoginService $loginService, IdentityInterface $identity)
     {
         $values = $request->getParsedBody();
-        $username = $values['username'];
-        $password = $values['password'];
+        $username = $values['username'] ?? '';
+        $password = $values['password'] ?? '';
 
         if ($loginService->login($username, $password)) {
             $identity->set([

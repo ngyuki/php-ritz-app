@@ -1,8 +1,8 @@
 <?php
 namespace Ritz\App\Controller;
 
+use Laminas\Diactoros\Response\TextResponse;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\TextResponse;
 use Ritz\View\ViewModel;
 
 class HomeController

@@ -1,14 +1,13 @@
 <?php
 namespace Ritz\App\Middleware;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\RedirectResponse;
-use Ritz\Router\RouteResult;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Ritz\View\ViewModel;
 use Ritz\App\Component\IdentityInterface;
-use Ritz\App\Controller\LoginController;
 
 class LoginMiddleware implements MiddlewareInterface
 {
@@ -22,19 +21,19 @@ class LoginMiddleware implements MiddlewareInterface
         $this->identity = $identity;
     }
 
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $noLogin = $request->getAttribute('noLogin');
 
         if ($noLogin) {
-            return $delegate->process($request);
+            return $handler->handle($request);
         }
 
         if ($this->identity->is() === false) {
             return new RedirectResponse('/login');
         }
 
-        $response = $delegate->process($request);
+        $response = $handler->handle($request);
 
         if ($response instanceof ViewModel) {
             $response = $response->withVariable('identify', $this->identity->get());
